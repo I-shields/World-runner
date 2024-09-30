@@ -51,13 +51,17 @@ public class ObjectPool : MonoBehaviour
         {
             Destroy(item.GetComponent<BoxCollider2D>());
         }
+        if(item.tag == "diamond")
+        {
+            Destroy(item);
+        }
         // Clear all children
         while (item.transform.childCount > 0)
         {
             GameObject child = item.transform.GetChild(0).gameObject;
             child.transform.SetParent(null);
             child.SetActive(false);
-            if(!pooledItems.Contains(child))
+            if(!pooledItems.Contains(child) && child.tag != "diamond")
             {
                 pooledItems.Add(child);
             }

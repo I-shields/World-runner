@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class groundMaker : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class groundMaker : MonoBehaviour
 
     public float seed;
     public ObjectPool itemPool;
+    public Tilemap backgroundTiles;
 
     void Start()
     {
