@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4950934392787093688}
   - component: {fileID: 4196436959568081412}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: dirtBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}

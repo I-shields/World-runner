@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9180007416898417065}
   - component: {fileID: 7542477199268370025}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: lavaBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}

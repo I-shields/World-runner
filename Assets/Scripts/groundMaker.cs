@@ -226,6 +226,7 @@ public class groundMaker : MonoBehaviour
             coin = Instantiate(coin, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
             coin.transform.parent = item.transform;
         }
+
     }
 
     private void spawnRules()

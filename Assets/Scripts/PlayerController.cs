@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,50 +15,45 @@ public class PlayerController : MonoBehaviour
     public AudioClip coinPickup;
     public AudioSource playerSpeaker;
     private bool autoWalk = false;
+    public Transform groundCheck;
+    public float groundDistance = 0.1f;
+    public LayerMask groundMask;
+    public TextMeshProUGUI uiDiamondCount;
+    public TextMeshProUGUI ui_Distance;
+    public GameObject start;
+    Vector3 velocity;
+    bool isGrounded;
 
     void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
+        uiDiamondCount.text = "X " + diamondCount.ToString();
     }
 
     void Update()
     {
-
-
-        inputMovement = Input.GetAxisRaw("Horizontal");
+        isGrounded = false;
+        isGrounded = Physics2D.CircleCast(groundCheck.position, groundDistance, Vector2.down, 0.1f, groundMask);
+        float movement = Input.GetAxisRaw("Horizontal");
+        if (movement > 0 && !autoWalk)
+        {
+            playerRb.velocity = new Vector2(movement * moveSpeed, playerRb.velocity.y);
+        }
+        else if(autoWalk)
+        {
+            playerRb.velocity = new Vector2(1 * moveSpeed, playerRb.velocity.y);
+        }
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
 
         if(Input.GetKeyDown(KeyCode.P))
         {
             autoWalk = !autoWalk;
         }
+        ui_Distance.text = "Distance: " + Mathf.RoundToInt(Mathf.Abs(transform.position.x - start.transform.position.x)).ToString();
 
-        if(autoWalk)
-        {
-            playerRb.velocity = new Vector2(1 * moveSpeed, playerRb.velocity.y);
-        }
-
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            playerRb.velocity = Vector2.up * jumpForce;
-        }
-
-        if(!autoWalk)
-        {
-            if(inputMovement > 0)
-            {
-                playerRb.velocity = new Vector2(inputMovement * moveSpeed, playerRb.velocity.y);
-            }
-        }
-
-        if(inputMovement > 0)
-        {
-            playerRb.velocity = new Vector2(inputMovement * moveSpeed, playerRb.velocity.y);
-        }
-
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            Debug.Log(Resources.FindObjectsOfTypeAll<GameObject>().Length);
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -67,7 +63,7 @@ public class PlayerController : MonoBehaviour
             playerSpeaker.PlayOneShot(coinPickup);
             diamondCount++;
             Destroy(other.gameObject);
-            Debug.Log(diamondCount);
+            uiDiamondCount.text = "x " + diamondCount.ToString();
         }
     }
 
