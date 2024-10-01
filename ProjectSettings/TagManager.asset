@@ -9,6 +9,7 @@ TagManager:
   - lava
   - sand
   - water
+  - droppingRock
   layers:
   - Default
   - TransparentFX

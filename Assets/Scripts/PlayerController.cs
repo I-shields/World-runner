@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     Vector3 velocity;
     bool isGrounded;
 
+    private bool isPaused = false;
+
     void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
@@ -56,6 +58,11 @@ public class PlayerController : MonoBehaviour
         }
         ui_Distance.text = "Distance: " + Mathf.RoundToInt(Mathf.Abs(transform.position.x - start.transform.position.x)).ToString();
 
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseGame();
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -67,6 +74,33 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             uiDiamondCount.text = "x " + diamondCount.ToString();
         }
+        
+        if(other.tag == "lava")
+        {
+            Debug.Log("Ouch!!");
+        }
+
+        if(other.tag == "droppingRock")
+        {
+            Debug.Log("Ouch!!!!!!");
+            Destroy(other.gameObject);
+        }
+    }
+
+
+    private void pauseGame()
+    {
+        if(isPaused)
+        {
+            Time.timeScale = 1;
+            isPaused = false;
+        }
+        else
+        {
+            Time.timeScale = 0;
+            isPaused = true;
+        }
+
     }
 
 }
