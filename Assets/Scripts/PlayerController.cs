@@ -4,6 +4,8 @@ using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 3.4f;
     private float inputMovement;
     public float jumpForce = 5f;
-    private int diamondCount = 0;
+    public int diamondCount = 0;
     public AudioClip coinPickup;
     public AudioSource playerSpeaker;
     private bool autoWalk = false;
@@ -21,15 +23,21 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI uiDiamondCount;
     public TextMeshProUGUI ui_Distance;
     public GameObject start;
-    Vector3 velocity;
+    public Canvas pauseMenu;
+    public Canvas mainCanvas;
+    public int distanceTraveled = 0;
+    public Canvas endGameCanvas;
+    private endScreen deathLogic;
     bool isGrounded;
-
-    private bool isPaused = false;
-
+    private bool isPaused = true;
     void Start()
     {
+        deathLogic = endGameCanvas.GetComponent<endScreen>();
         playerRb = GetComponent<Rigidbody2D>();
         uiDiamondCount.text = "X " + diamondCount.ToString();
+        pauseMenu.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(unpause);
+        pauseMenu.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(mainMenu);
+        pauseMenu.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(quitGame);
     }
 
     void Update()
@@ -56,11 +64,19 @@ public class PlayerController : MonoBehaviour
         {
             autoWalk = !autoWalk;
         }
-        ui_Distance.text = "Distance: " + Mathf.RoundToInt(Mathf.Abs(transform.position.x - start.transform.position.x)).ToString();
+        distanceTraveled = Mathf.RoundToInt(Mathf.Abs(transform.position.x - start.transform.position.x));
+        ui_Distance.text = "Distance: " + distanceTraveled.ToString();
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            pauseGame();
+            if(isPaused)
+            {
+                unpause();
+            }
+            else
+            {
+                pauseGame();
+            }
         }
 
     }
@@ -77,30 +93,53 @@ public class PlayerController : MonoBehaviour
         
         if(other.tag == "lava")
         {
-            Debug.Log("Ouch!!");
+            
+            endGame();
         }
 
         if(other.tag == "droppingRock")
         {
-            Debug.Log("Ouch!!!!!!");
-            Destroy(other.gameObject);
+            endGame();
         }
     }
 
 
     private void pauseGame()
     {
-        if(isPaused)
-        {
-            Time.timeScale = 1;
-            isPaused = false;
-        }
-        else
-        {
-            Time.timeScale = 0;
-            isPaused = true;
-        }
+        Time.timeScale = 0;
+        isPaused = true;
+        pauseMenu.enabled = true;
+        mainCanvas.enabled = false;
+    }
 
+    private void unpause()
+    {
+        Time.timeScale = 1;
+        isPaused = false;
+        pauseMenu.enabled = false;
+        mainCanvas.enabled = true;
+
+    }
+
+    private void quitGame()
+    {
+        Time.timeScale = 1;
+        Application.Quit();
+    }
+
+    private void mainMenu()
+    {
+        Time.timeScale = 1;
+        isPaused = false;
+        SceneManager.LoadScene("mainMenu");
+    }
+
+    private void endGame()
+    {
+        Time.timeScale = 0;
+        mainCanvas.enabled = false;
+        endGameCanvas.enabled = true;
+        deathLogic.onDeath();
     }
 
 }

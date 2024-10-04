@@ -21,7 +21,6 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject obj = Instantiate(grassBlock);
             obj.SetActive(false);
-            obj.tag = "inList";
             pooledItems.Add(obj);
         }
     }
@@ -38,7 +37,6 @@ public class ObjectPool : MonoBehaviour
         }
 
         GameObject newItem = Instantiate(grassBlock);
-        Debug.Log("New Item created");
         newItem.SetActive(true);
         pooledItems.Add(newItem);
         return newItem;

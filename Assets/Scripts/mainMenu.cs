@@ -24,10 +24,6 @@ public class mainMenu : MonoBehaviour
 
     private void quitGame()
     {
-        if(UnityEditor.EditorApplication.isPlaying)
-        {
-            UnityEditor.EditorApplication.isPlaying = false;
-        }
         Application.Quit();
     }
 
