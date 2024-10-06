@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -30,6 +31,9 @@ public class PlayerController : MonoBehaviour
     private endScreen deathLogic;
     bool isGrounded;
     private bool isPaused = true;
+    public int heartCount = 3;
+    public GameObject heartPrefab;
+    private List<GameObject> hearts = new List<GameObject>();
     void Start()
     {
         deathLogic = endGameCanvas.GetComponent<endScreen>();
@@ -38,6 +42,7 @@ public class PlayerController : MonoBehaviour
         pauseMenu.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(unpause);
         pauseMenu.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(mainMenu);
         pauseMenu.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(quitGame);
+        handleHealth();
     }
 
     void Update()
@@ -83,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "diamond")
+        if(other.gameObject.tag == "diamond")
         {
             playerSpeaker.PlayOneShot(coinPickup);
             diamondCount++;
@@ -91,14 +96,15 @@ public class PlayerController : MonoBehaviour
             uiDiamondCount.text = "x " + diamondCount.ToString();
         }
         
-        if(other.tag == "lava")
+        if(other.gameObject.tag == "lava")
         {
             
             endGame();
         }
 
-        if(other.tag == "droppingRock")
+        if(other.gameObject.tag == "droppingRock")
         {
+            Destroy(other.gameObject);
             endGame();
         }
     }
@@ -136,10 +142,31 @@ public class PlayerController : MonoBehaviour
 
     private void endGame()
     {
-        Time.timeScale = 0;
-        mainCanvas.enabled = false;
-        endGameCanvas.enabled = true;
-        deathLogic.onDeath();
+        if(hearts.Count == 1)
+        {
+            Destroy(hearts[hearts.Count-1]);
+            hearts.RemoveAt(hearts.Count - 1);
+            Time.timeScale = 0;
+            mainCanvas.enabled = false;
+            endGameCanvas.enabled = true;
+            deathLogic.onDeath();
+        }
+        else
+        {
+            Destroy(hearts[hearts.Count-1]);
+            hearts.RemoveAt(hearts.Count - 1);
+        }
+    }
+
+    private void handleHealth()
+    {
+        for(int i = 0; i < heartCount; i++)
+        {
+            GameObject temp = Instantiate(heartPrefab);
+            temp.transform.SetParent(mainCanvas.transform, false);
+            temp.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200 + (75 * i), -50);
+            hearts.Add(temp);
+        }
     }
 
 }

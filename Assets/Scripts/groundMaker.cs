@@ -120,6 +120,7 @@ public class groundMaker : MonoBehaviour
                             GameObject lavaCube = itemPool.getObjectFromPool();
                             lavaCube.transform.position = flatArea;
                             lavaCube.GetComponent<SpriteRenderer>().sprite = lavaSprite;
+                            lavaCube.layer = LayerMask.NameToLayer("playerInteraction");
                             if(lavaCube.GetComponent<BoxCollider2D>() != null)
                             {
                                 lavaCube.GetComponent<BoxCollider2D>().isTrigger = true;

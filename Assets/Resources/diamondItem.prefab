@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3895046890156913414}
   - component: {fileID: 3960211459448518937}
   - component: {fileID: 4822298625706440340}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: diamondItem
   m_TagString: diamond
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

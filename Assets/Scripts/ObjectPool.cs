@@ -26,11 +26,11 @@ public class ObjectPool : MonoBehaviour
     }
     public GameObject getObjectFromPool()
     {
-        Debug.Log(pooledItems.Count);
         foreach (GameObject obj in pooledItems)
         {
             if(!obj.activeInHierarchy)
             {
+                obj.layer = LayerMask.NameToLayer("Ground");
                 obj.SetActive(true);
                 return obj;
             }
@@ -39,6 +39,7 @@ public class ObjectPool : MonoBehaviour
         GameObject newItem = Instantiate(grassBlock);
         newItem.SetActive(true);
         pooledItems.Add(newItem);
+        newItem.layer = LayerMask.NameToLayer("Ground");
         return newItem;
     }
 
