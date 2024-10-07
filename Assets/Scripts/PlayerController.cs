@@ -34,8 +34,13 @@ public class PlayerController : MonoBehaviour
     public int heartCount = 3;
     public GameObject heartPrefab;
     private List<GameObject> hearts = new List<GameObject>();
+    highScoreHelper hsh;
+    private bool flipped = false;
+    private float timer = 0;
+    private float startTime = 0;
     void Start()
     {
+        hsh = new highScoreHelper();
         deathLogic = endGameCanvas.GetComponent<endScreen>();
         playerRb = GetComponent<Rigidbody2D>();
         uiDiamondCount.text = "X " + diamondCount.ToString();
@@ -47,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        timer += Time.deltaTime;
         isGrounded = false;
         isGrounded = Physics2D.CircleCast(groundCheck.position, groundDistance, Vector2.down, 0.1f, groundMask);
         float movement = Input.GetAxisRaw("Horizontal");
@@ -84,10 +90,17 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if(flipped && (startTime + 18) <= timer)
+        {
+            flipped = false;
+            Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        timer += Time.deltaTime;
         if(other.gameObject.tag == "diamond")
         {
             playerSpeaker.PlayOneShot(coinPickup);
@@ -107,6 +120,18 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             endGame();
         }
+
+        if(other.gameObject.tag == "life")
+        {
+            Destroy(other.gameObject);
+            lifePickup();
+        }
+        if(other.gameObject.tag == "blackHole")
+        {
+            Destroy(other.gameObject);
+            blackholeSwitch();
+        }
+
     }
 
 
@@ -144,6 +169,7 @@ public class PlayerController : MonoBehaviour
     {
         if(hearts.Count == 1)
         {
+            hsh.saveScores(distanceTraveled);
             Destroy(hearts[hearts.Count-1]);
             hearts.RemoveAt(hearts.Count - 1);
             Time.timeScale = 0;
@@ -166,6 +192,34 @@ public class PlayerController : MonoBehaviour
             temp.transform.SetParent(mainCanvas.transform, false);
             temp.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200 + (75 * i), -50);
             hearts.Add(temp);
+        }
+    }
+
+    private void lifePickup()
+    {
+        if(hearts.Count < heartCount)
+        {
+            float lastHeartPos = hearts[hearts.Count - 1].transform.localPosition.x;
+            GameObject newHeart = Instantiate(heartPrefab);
+            newHeart.transform.SetParent(mainCanvas.transform, false);
+            newHeart.GetComponent<RectTransform>().anchoredPosition = new Vector2(-200 + (75 * hearts.Count), -50);
+            hearts.Add(newHeart);
+        }
+        else
+        {
+            diamondCount += 10;
+            uiDiamondCount.text = "x " + diamondCount.ToString();
+        }
+    }
+
+    private void blackholeSwitch()
+    {
+        if(!flipped)
+        {
+            Camera mainCamera = Camera.main;
+            mainCamera.transform.rotation = Quaternion.Euler(0, 0, 180);
+            startTime = timer;
+            flipped = true;
         }
     }
 

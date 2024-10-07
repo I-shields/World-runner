@@ -124,10 +124,13 @@ public class groundMaker : MonoBehaviour
                             if(lavaCube.GetComponent<BoxCollider2D>() != null)
                             {
                                 lavaCube.GetComponent<BoxCollider2D>().isTrigger = true;
+                                lavaCube.GetComponent<BoxCollider>().size = new Vector3(0.9f, 0.9f, 0.9f);
                             }
                             else
                             {
                                 lavaCube.AddComponent<BoxCollider2D>().isTrigger = true;
+                                lavaCube.GetComponent<BoxCollider2D>().size = new Vector3(0.9f, 0.9f, 0.9f);
+                                
                             }
                             lavaCube.tag = "lava";
                             //spawn block below lava
@@ -198,6 +201,7 @@ public class groundMaker : MonoBehaviour
 
     private void terrainRules(GameObject item)
     {
+        bool diamondSpawnFailed = true;
         if(item.transform.position.y <= -0.5f && item.tag != "lava")
         {
             item.GetComponent<SpriteRenderer>().sprite = sandSprite;
@@ -228,6 +232,26 @@ public class groundMaker : MonoBehaviour
             GameObject coin = Resources.Load<GameObject>("diamondItem");
             coin = Instantiate(coin, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
             coin.transform.parent = item.transform;
+            diamondSpawnFailed = false;
+        }
+
+        if(UnityEngine.Random.value > 0.9 && item.tag != "lava" && diamondSpawnFailed)
+        {
+            if(UnityEngine.Random.value > 0.9)
+            {
+                if(UnityEngine.Random.value < 0.5)
+                {
+                    GameObject life = Resources.Load<GameObject>("heartPickup");
+                    life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
+                    life.transform.parent = item.transform;
+                }
+                else
+                {
+                    GameObject life = Resources.Load<GameObject>("blackholePrefab");
+                    life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
+                    life.transform.parent = item.transform;
+                }
+            }
         }
 
     }
