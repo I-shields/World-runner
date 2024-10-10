@@ -13,7 +13,7 @@ public class endScreen : MonoBehaviour
     public Button quitBtn;
     public int distanceTraveled;
     public int coinsCollected;
-
+    public TextMeshProUGUI score;
     public PlayerController pc;
     public void onDeath()
     {
@@ -21,6 +21,7 @@ public class endScreen : MonoBehaviour
         coinsCollected = pc.diamondCount;
         dist.text = "Distance Traveled: " + distanceTraveled.ToString();
         coins.text = "Coins Collected: " + coinsCollected.ToString();
+        score.text = "Score: " + (distanceTraveled * coinsCollected).ToString();
         mainMenuBtn.onClick.AddListener(gotToMain);
         quitBtn.onClick.AddListener(quitGame);
 

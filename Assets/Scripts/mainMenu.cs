@@ -52,7 +52,7 @@ public class mainMenu : MonoBehaviour
                 TextMeshProUGUI textComponent = textBox.AddComponent<TextMeshProUGUI>();
                 textBox.transform.SetParent(highScoreCanvas.transform, false);
                 textBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 250 - (75 * i));
-                textComponent.text = "Distance: " + highScores[i].ToString();
+                textComponent.text = "Score: " + highScores[i].ToString();
                 textComponent.enableWordWrapping = false;
                 textComponent.alignment = TextAlignmentOptions.Center;
                 tbs.Add(textBox);

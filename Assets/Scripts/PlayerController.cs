@@ -35,9 +35,10 @@ public class PlayerController : MonoBehaviour
     public GameObject heartPrefab;
     private List<GameObject> hearts = new List<GameObject>();
     highScoreHelper hsh;
-    private bool flipped = false;
+    public bool flipped = false;
     private float timer = 0;
     private float startTime = 0;
+    public TextMeshProUGUI highscoreSplash;
     void Start()
     {
         hsh = new highScoreHelper();
@@ -64,9 +65,12 @@ public class PlayerController : MonoBehaviour
         {
             playerRb.velocity = new Vector2(1 * moveSpeed, playerRb.velocity.y);
         }
+        else if(movement == 0)
+        {
+            playerRb.velocity = new Vector2(0, playerRb.velocity.y);
+        }
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            //playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             playerRb.velocity = Vector2.up * jumpForce;
             playerRb.velocity = new Vector2((playerRb.velocity.x / 2), playerRb.velocity.y);
         }
@@ -109,7 +113,7 @@ public class PlayerController : MonoBehaviour
             uiDiamondCount.text = "x " + diamondCount.ToString();
         }
         
-        if(other.gameObject.tag == "lava")
+        if(other.gameObject.tag == "lava" || other.gameObject.tag == "bouncyLava")
         {
             
             endGame();
@@ -169,9 +173,24 @@ public class PlayerController : MonoBehaviour
     {
         if(hearts.Count == 1)
         {
-            hsh.saveScores(distanceTraveled);
+            hsh.saveScores((distanceTraveled * diamondCount));
             Destroy(hearts[hearts.Count-1]);
             hearts.RemoveAt(hearts.Count - 1);
+            List<int> scores = hsh.getScores();
+            if(scores.Count >= 5)
+            {
+                foreach(int score in scores)
+                {
+                    if(distanceTraveled > score)
+                    {
+                        highscoreSplash.text = "NEW HIGH SCORE";
+                    }
+                }
+            }
+            else
+            {
+                highscoreSplash.text = "NEW HIGH SCORE";
+            }
             Time.timeScale = 0;
             mainCanvas.enabled = false;
             endGameCanvas.enabled = true;

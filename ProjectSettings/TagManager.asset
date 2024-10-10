@@ -12,6 +12,7 @@ TagManager:
   - droppingRock
   - life
   - blackHole
+  - bouncyLava
   layers:
   - Default
   - TransparentFX

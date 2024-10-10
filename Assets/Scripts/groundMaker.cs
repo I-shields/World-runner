@@ -8,9 +8,7 @@ using UnityEngine.Tilemaps;
 public class groundMaker : MonoBehaviour
 {
     public Transform spawnPos;
-
     Vector2 spawnLevel;
-
     private List<GameObject> chunks = new List<GameObject>();
     private GameObject lava;
     private Sprite grassSprite;
@@ -18,9 +16,7 @@ public class groundMaker : MonoBehaviour
     private Sprite stoneSprite;
     private Sprite sandSprite;
     private Sprite lavaSprite;
-
-    public Transform player;
-
+    public GameObject player;
     public float seed;
     public ObjectPool itemPool;
     public Tilemap backgroundTiles;
@@ -117,28 +113,37 @@ public class groundMaker : MonoBehaviour
                         //Try spawning lava
                         if(UnityEngine.Random.value > 0.64f && j + 2 < distance && j > 1)
                         {
-                            GameObject lavaCube = itemPool.getObjectFromPool();
-                            lavaCube.transform.position = flatArea;
-                            lavaCube.GetComponent<SpriteRenderer>().sprite = lavaSprite;
-                            lavaCube.layer = LayerMask.NameToLayer("playerInteraction");
-                            if(lavaCube.GetComponent<BoxCollider2D>() != null)
+                            if(UnityEngine.Random.value < 0.5)
                             {
-                                lavaCube.GetComponent<BoxCollider2D>().isTrigger = true;
-                                lavaCube.GetComponent<BoxCollider>().size = new Vector3(0.9f, 0.9f, 0.9f);
+                                GameObject lavaCube = itemPool.getObjectFromPool();
+                                lavaCube.transform.position = flatArea;
+                                lavaCube.GetComponent<SpriteRenderer>().sprite = lavaSprite;
+                                lavaCube.layer = LayerMask.NameToLayer("playerInteraction");
+                                if(lavaCube.GetComponent<BoxCollider2D>() != null)
+                                {
+                                    lavaCube.GetComponent<BoxCollider2D>().isTrigger = true;
+                                    lavaCube.GetComponent<BoxCollider2D>().size = new Vector3(0.9f, 0.9f, 0.9f);
+                                }
+                                else
+                                {
+                                    lavaCube.AddComponent<BoxCollider2D>().isTrigger = true;
+                                    lavaCube.GetComponent<BoxCollider2D>().size = new Vector3(0.9f, 0.9f, 0.9f);
+
+                                }
+                                lavaCube.tag = "lava";
+                                //spawn block below lava
+                                Vector2 fillerLoc = new Vector2(flatArea.x, flatArea.y - 1);
+                                fillArea(fillerLoc, lavaCube.transform);
+                                terrainRules(lavaCube);
+                                chunks.Add(lavaCube);
+                                flatArea.x += 1;
                             }
                             else
                             {
-                                lavaCube.AddComponent<BoxCollider2D>().isTrigger = true;
-                                lavaCube.GetComponent<BoxCollider2D>().size = new Vector3(0.9f, 0.9f, 0.9f);
-                                
+                                GameObject jumpy = Resources.Load<GameObject>("bouncyLava");
+                                jumpy = Instantiate(jumpy, new Vector2(flatArea.x, flatArea.y + 1.5f), quaternion.identity);
                             }
-                            lavaCube.tag = "lava";
-                            //spawn block below lava
-                            Vector2 fillerLoc = new Vector2(flatArea.x, flatArea.y - 1);
-                            fillArea(fillerLoc, lavaCube.transform);
-                            terrainRules(lavaCube);
-                            chunks.Add(lavaCube);
-                            flatArea.x += 1;
+
 
                         }
 
@@ -182,6 +187,7 @@ public class groundMaker : MonoBehaviour
         
     }
 
+    //function to fill terrain under a block
     private void fillArea(Vector2 pos, Transform parent)
     {
         for(int k = 0; k < 15; k++)
@@ -199,15 +205,19 @@ public class groundMaker : MonoBehaviour
     }
 
 
+    //This function handles rules for the terrain and spawn objects
     private void terrainRules(GameObject item)
     {
+        
         bool diamondSpawnFailed = true;
-        if(item.transform.position.y <= -0.5f && item.tag != "lava")
+        //spawn sand under a certain level
+        if(item.transform.position.y <= -0.5f && item.tag != "lava" && item.tag != "bouncyLava")
         {
             item.GetComponent<SpriteRenderer>().sprite = sandSprite;
             item.tag = "sand";
         }
 
+        //Gradient dirt and stone fill 
         if(item.transform.childCount > 0)
         {
             for(int i = 0; i < item.transform.childCount; i++)
@@ -227,7 +237,8 @@ public class groundMaker : MonoBehaviour
             }
         }
 
-        if(UnityEngine.Random.value < 0.3f && item.tag != "lava")
+        //70% chance to spawn a diamond pickup if the block isn't lava
+        if(UnityEngine.Random.value < 0.3f && item.tag != "lava"&& item.tag != "bouncyLava")
         {
             GameObject coin = Resources.Load<GameObject>("diamondItem");
             coin = Instantiate(coin, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
@@ -235,9 +246,11 @@ public class groundMaker : MonoBehaviour
             diamondSpawnFailed = false;
         }
 
-        if(UnityEngine.Random.value > 0.9 && item.tag != "lava" && diamondSpawnFailed)
+        //currently a 4% chance to spawn a life pickup on non lava blocks
+        //and a 4% chance to spawn a black hole if the player isn't already flipped
+        if(UnityEngine.Random.value > 0.9 && item.tag != "lava" && diamondSpawnFailed && item.tag != "bouncyLava")
         {
-            if(UnityEngine.Random.value > 0.9)
+            if(UnityEngine.Random.value > 0.8)
             {
                 if(UnityEngine.Random.value < 0.5)
                 {
@@ -245,7 +258,7 @@ public class groundMaker : MonoBehaviour
                     life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
                     life.transform.parent = item.transform;
                 }
-                else
+                else if(!player.GetComponent<PlayerController>().flipped)
                 {
                     GameObject life = Resources.Load<GameObject>("blackholePrefab");
                     life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
@@ -253,12 +266,6 @@ public class groundMaker : MonoBehaviour
                 }
             }
         }
-
-    }
-
-    private void spawnRules()
-    {
-
 
     }
 }
