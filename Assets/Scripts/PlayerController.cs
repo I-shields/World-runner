@@ -35,10 +35,11 @@ public class PlayerController : MonoBehaviour
     public GameObject heartPrefab;
     private List<GameObject> hearts = new List<GameObject>();
     highScoreHelper hsh;
-    public bool flipped = false;
     private float timer = 0;
     private float startTime = 0;
     public TextMeshProUGUI highscoreSplash;
+    public bool invincible = false;
+    public TextMeshProUGUI powerupText;
     void Start()
     {
         hsh = new highScoreHelper();
@@ -54,6 +55,40 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
+        movement();
+
+
+        distanceTraveled = Mathf.RoundToInt(Mathf.Abs(transform.position.x - start.transform.position.x));
+        ui_Distance.text = "Distance: " + distanceTraveled.ToString();
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(isPaused)
+            {
+                unpause();
+            }
+            else
+            {
+                pauseGame();
+            }
+        }
+
+        if(invincible)
+        {
+            powerupText.text = "Super charge: " + Mathf.RoundToInt(((startTime + 18) - timer));
+        }
+        if(invincible && (startTime + 18) <= timer)
+        {
+            invincible = false;
+            jumpForce /= 1.5f;
+            moveSpeed /= 1.5f;
+            powerupText.enabled = false;
+        }
+
+    }
+
+    private void movement()
+    {
         isGrounded = false;
         isGrounded = Physics2D.CircleCast(groundCheck.position, groundDistance, Vector2.down, 0.1f, groundMask);
         float movement = Input.GetAxisRaw("Horizontal");
@@ -79,27 +114,6 @@ public class PlayerController : MonoBehaviour
         {
             autoWalk = !autoWalk;
         }
-        distanceTraveled = Mathf.RoundToInt(Mathf.Abs(transform.position.x - start.transform.position.x));
-        ui_Distance.text = "Distance: " + distanceTraveled.ToString();
-
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            if(isPaused)
-            {
-                unpause();
-            }
-            else
-            {
-                pauseGame();
-            }
-        }
-
-        if(flipped && (startTime + 18) <= timer)
-        {
-            flipped = false;
-            Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -115,11 +129,14 @@ public class PlayerController : MonoBehaviour
         
         if(other.gameObject.tag == "lava" || other.gameObject.tag == "bouncyLava")
         {
+            if(!invincible)
+            {
+                endGame();
+            }
             
-            endGame();
         }
 
-        if(other.gameObject.tag == "droppingRock")
+        if(other.gameObject.tag == "droppingRock" && !invincible)
         {
             Destroy(other.gameObject);
             endGame();
@@ -233,12 +250,13 @@ public class PlayerController : MonoBehaviour
 
     private void blackholeSwitch()
     {
-        if(!flipped)
+        startTime = timer;
+        if(!invincible)
         {
-            Camera mainCamera = Camera.main;
-            mainCamera.transform.rotation = Quaternion.Euler(0, 0, 180);
-            startTime = timer;
-            flipped = true;
+            powerupText.enabled = true;
+            invincible = true;
+            jumpForce *= 1.5f;
+            moveSpeed *= 1.5f;
         }
     }
 

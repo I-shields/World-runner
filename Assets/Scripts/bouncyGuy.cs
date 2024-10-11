@@ -8,6 +8,7 @@ public class bouncyGuy : MonoBehaviour
     private GameObject player;
     private Rigidbody2D rb;
     private bool isGrounded = true;
+    public float jumpForce = 12;
     private void Awake()
     {
         player = GameObject.FindWithTag("Player");
@@ -21,7 +22,7 @@ public class bouncyGuy : MonoBehaviour
             isGrounded = Physics2D.CircleCast(gameObject.transform.position, 0.5f, Vector2.down, 0.1f, LayerMask.GetMask("Ground"));
             if(isGrounded)
             {
-                rb.velocity = Vector2.up * 9;
+                rb.velocity = Vector2.up * jumpForce;
             }
         }
         else

@@ -258,7 +258,7 @@ public class groundMaker : MonoBehaviour
                     life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
                     life.transform.parent = item.transform;
                 }
-                else if(!player.GetComponent<PlayerController>().flipped)
+                else if(!player.GetComponent<PlayerController>().invincible)
                 {
                     GameObject life = Resources.Load<GameObject>("blackholePrefab");
                     life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);

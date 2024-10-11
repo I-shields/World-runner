@@ -6,12 +6,13 @@ public class Chaser : MonoBehaviour
 {
     private float timer = 0;
     public GameObject rock;
+    public int timeBetweenFalls = 6;
 
     private void Update()
     {
         timer += Time.deltaTime;
 
-        if(timer >= 4)
+        if(timer >= timeBetweenFalls)
         {
             if(transform.childCount > 0)
             {
