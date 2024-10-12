@@ -247,12 +247,11 @@ public class groundMaker : MonoBehaviour
         }
 
         //currently a 4% chance to spawn a life pickup on non lava blocks
-        //and a 4% chance to spawn a black hole if the player isn't already flipped
         if(UnityEngine.Random.value > 0.9 && item.tag != "lava" && diamondSpawnFailed && item.tag != "bouncyLava")
         {
             if(UnityEngine.Random.value > 0.8)
             {
-                if(UnityEngine.Random.value < 0.5)
+                if(UnityEngine.Random.value < 0.3)
                 {
                     GameObject life = Resources.Load<GameObject>("heartPickup");
                     life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
@@ -260,7 +259,7 @@ public class groundMaker : MonoBehaviour
                 }
                 else if(!player.GetComponent<PlayerController>().invincible)
                 {
-                    GameObject life = Resources.Load<GameObject>("blackholePrefab");
+                    GameObject life = Resources.Load<GameObject>("powerUp");
                     life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
                     life.transform.parent = item.transform;
                 }

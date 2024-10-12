@@ -15,6 +15,7 @@ public class endScreen : MonoBehaviour
     public int coinsCollected;
     public TextMeshProUGUI score;
     public PlayerController pc;
+    public Button playAgainBtn;
     public void onDeath()
     {
         distanceTraveled = pc.distanceTraveled;
@@ -24,6 +25,7 @@ public class endScreen : MonoBehaviour
         score.text = "Score: " + (distanceTraveled * coinsCollected).ToString();
         mainMenuBtn.onClick.AddListener(gotToMain);
         quitBtn.onClick.AddListener(quitGame);
+        playAgainBtn.onClick.AddListener(restartGame);
 
     }
 
@@ -36,5 +38,11 @@ public class endScreen : MonoBehaviour
     private void quitGame()
     {
         Application.Quit();
+    }
+
+    private void restartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1;
     }
 }

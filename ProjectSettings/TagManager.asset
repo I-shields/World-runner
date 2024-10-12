@@ -11,8 +11,8 @@ TagManager:
   - water
   - droppingRock
   - life
-  - blackHole
   - bouncyLava
+  - PowerUp
   layers:
   - Default
   - TransparentFX

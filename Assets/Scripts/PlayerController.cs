@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     public int distanceTraveled = 0;
     public Canvas endGameCanvas;
     private endScreen deathLogic;
-    bool isGrounded;
+    private bool isGrounded;
     private bool isPaused = true;
     public int heartCount = 3;
     public GameObject heartPrefab;
@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI highscoreSplash;
     public bool invincible = false;
     public TextMeshProUGUI powerupText;
+    public GameObject activeJetpack;
+    public GameObject inactiveJetpack;
     void Start()
     {
         hsh = new highScoreHelper();
@@ -55,8 +57,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        movement();
 
+        movement();
 
         distanceTraveled = Mathf.RoundToInt(Mathf.Abs(transform.position.x - start.transform.position.x));
         ui_Distance.text = "Distance: " + distanceTraveled.ToString();
@@ -91,6 +93,17 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = false;
         isGrounded = Physics2D.CircleCast(groundCheck.position, groundDistance, Vector2.down, 0.1f, groundMask);
+        if(playerRb.velocity.y > 0.5)
+        {
+            inactiveJetpack.GetComponent<SpriteRenderer>().enabled = false;
+            activeJetpack.GetComponent<SpriteRenderer>().enabled = true;
+
+        }
+        else
+        {
+            activeJetpack.GetComponent<SpriteRenderer>().enabled = false;
+            inactiveJetpack.GetComponent<SpriteRenderer>().enabled = true;
+        }
         float movement = Input.GetAxisRaw("Horizontal");
         if (movement > 0 && !autoWalk)
         {
@@ -147,10 +160,10 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             lifePickup();
         }
-        if(other.gameObject.tag == "blackHole")
+        if(other.gameObject.tag == "PowerUp")
         {
             Destroy(other.gameObject);
-            blackholeSwitch();
+            powerUpInit();
         }
 
     }
@@ -198,7 +211,7 @@ public class PlayerController : MonoBehaviour
             {
                 foreach(int score in scores)
                 {
-                    if(distanceTraveled > score)
+                    if((distanceTraveled * diamondCount) > score)
                     {
                         highscoreSplash.text = "NEW HIGH SCORE";
                     }
@@ -248,7 +261,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void blackholeSwitch()
+    private void powerUpInit()
     {
         startTime = timer;
         if(!invincible)

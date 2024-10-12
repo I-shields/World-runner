@@ -6,7 +6,7 @@ using System.IO;
 
 public class highScoreHelper
 {
-    private static string path = "Assets/Resources/Highscores.txt";
+    private static string path = Application.dataPath + "/Resources/Highscores.txt";
     private List<int> scores = new List<int>();
     private void readData()
     {
