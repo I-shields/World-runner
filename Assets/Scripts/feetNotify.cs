@@ -1,3 +1,8 @@
+//============================================================
+// Author: Isaac Shields
+// Date  : 10-12-2024
+// Desc  : plays sounds from the feet speaker when needed
+//============================================================
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;

@@ -1,3 +1,9 @@
+//============================================================
+// Author: Isaac Shields
+// Date  : 10-12-2024
+// Desc  : Object pool so the engine doesn't have to
+//         contently create and destroy 100s of game objects          
+//============================================================
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -15,6 +21,7 @@ public class ObjectPool : MonoBehaviour
 
     public void makePool()
     {
+        //create the pool and spawn in the initial blocks
         pooledItems = new List<GameObject>();
 
         for (int i = 0; i < poolSize; i++)
@@ -26,6 +33,8 @@ public class ObjectPool : MonoBehaviour
     }
     public GameObject getObjectFromPool()
     {
+        //return an inactive game object to use if one is available
+        //creates a new game object if non are available
         foreach (GameObject obj in pooledItems)
         {
             if(!obj.activeInHierarchy)
@@ -45,6 +54,8 @@ public class ObjectPool : MonoBehaviour
 
     public void ReturnItem(GameObject item)
     {
+        //returns a game object to the pool when no longer being used
+        //clears any attributes from the object
         item.transform.SetParent(null);
         if(item.GetComponent<BoxCollider2D>() != null)
         {

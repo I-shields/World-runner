@@ -1,3 +1,8 @@
+//============================================================
+// Author: Isaac Shields
+// Date  : 10-12-2024
+// Desc  : controls the background
+//============================================================
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,14 +16,13 @@ public class ParallexBackground : MonoBehaviour
     public float moveSpeed;
     void Start()
     {
-
+        //initial setup
         lastPos = player.transform.position.x;
         length = GetComponent<SpriteRenderer>().bounds.size.x;
     }
-
-    // Update is called once per frame
     void Update()
     {
+        //move the background as the player moves
         float curPos = transform.position.x;
         if(curPos != lastPos)
         {

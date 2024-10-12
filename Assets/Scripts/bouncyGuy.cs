@@ -1,3 +1,8 @@
+//============================================================
+// Author: Isaac Shields
+// Date  : 10-12-2024
+// Desc  : logic for the bouncy guy
+//============================================================
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -16,6 +21,7 @@ public class bouncyGuy : MonoBehaviour
     }
     void Update()
     {
+        //if the player is within range bounce, otherwise, destroy the gameobject
         if(Mathf.Abs(player.transform.position.x - transform.position.x) < 100)
         {
             isGrounded = false;

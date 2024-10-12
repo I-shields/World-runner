@@ -1,3 +1,8 @@
+//============================================================
+// Author: Isaac Shields
+// Date  : 10-12-2024
+// Desc  : creates the terrain
+//============================================================
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -23,6 +28,7 @@ public class groundMaker : MonoBehaviour
 
     void Start()
     {
+        //initial setup
         itemPool.makePool();
         dirtSprite = Resources.Load<Sprite>("dirtSprite");
         stoneSprite = Resources.Load<Sprite>("stoneSprite");
@@ -35,6 +41,7 @@ public class groundMaker : MonoBehaviour
     }
     void Update()
     {
+        //start building the world, and return chunks behind the player to the pool
         buildWorld();
         if(Mathf.Abs(player.transform.position.x - chunks[0].transform.position.x) > 12)
         {
@@ -46,6 +53,7 @@ public class groundMaker : MonoBehaviour
 
     private void initialBuild()
     {
+        //build the initial platform
         for(int i = -5; i < 10; i++)
         {
             spawnLevel = new Vector2(i, -0.5f);

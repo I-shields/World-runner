@@ -1,3 +1,8 @@
+//============================================================
+// Author: Isaac Shields
+// Date  : 10-12-2024
+// Desc  : logic for main menu, function names explains most everything
+//============================================================
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +21,7 @@ public class mainMenu : MonoBehaviour
     public List<GameObject> tbs = new List<GameObject>();
     void Start()
     {
+        //initial setup
         hsh = new highScoreHelper();
         btn_quitGame.onClick.AddListener(quitGame);
         btn_newGame.onClick.AddListener(startGame);
@@ -43,7 +49,7 @@ public class mainMenu : MonoBehaviour
     {
         this.GetComponent<Canvas>().enabled = false;
         highScoreCanvas.enabled = true;
-        List<int> highScores = loadHighScores();
+        List<int> highScores = getHighScores();
         if(highScores.Count > 0)
         {
             for(int i = 0; i < highScores.Count; i++)
@@ -71,7 +77,7 @@ public class mainMenu : MonoBehaviour
 
     }
 
-    private List<int> loadHighScores()
+    private List<int> getHighScores()
     {
         List<int> scores = hsh.getScores();
         return scores;
@@ -79,6 +85,7 @@ public class mainMenu : MonoBehaviour
 
     private void returnToMain()
     {
+        //return to main menu from high score sub window
         for(int i = tbs.Count - 1; i >= 0; i--)
         {
             Destroy(tbs[i]);

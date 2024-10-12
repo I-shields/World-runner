@@ -1,3 +1,8 @@
+//============================================================
+// Author: Isaac Shields
+// Date  : 10-12-2024
+// Desc  : handles high score
+//============================================================
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,8 +11,11 @@ using System.IO;
 
 public class highScoreHelper
 {
+
     private static string path = Application.dataPath + "/Resources/Highscores.txt";
     private List<int> scores = new List<int>();
+
+    //get high scores and save them to a list
     private void readData()
     {
         if(File.Exists(path))
@@ -27,6 +35,7 @@ public class highScoreHelper
         }
     }
 
+    //public function to get the high scores
     public List<int> getScores()
     {
         readData();
@@ -34,6 +43,7 @@ public class highScoreHelper
     }
 
 
+    //saves the high scores and adds new ones if applicable
     public void saveScores(int score)
     {
         readData();

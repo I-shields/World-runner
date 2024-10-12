@@ -1,3 +1,8 @@
+//============================================================
+// Author: Isaac Shields
+// Date  : 10-12-2024
+// Desc  : logic for the game over screen
+//============================================================
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -18,6 +23,7 @@ public class endScreen : MonoBehaviour
     public Button playAgainBtn;
     public void onDeath()
     {
+        //initial setup and display
         distanceTraveled = pc.distanceTraveled;
         coinsCollected = pc.diamondCount;
         dist.text = "Distance Traveled: " + distanceTraveled.ToString();
