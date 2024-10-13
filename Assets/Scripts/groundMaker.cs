@@ -254,28 +254,28 @@ public class groundMaker : MonoBehaviour
             diamondSpawnFailed = false;
         }
 
-        //currently a 4% chance to spawn a life pickup on non lava blocks
+        //Spawn pickups
         if(UnityEngine.Random.value > 0.9 && item.tag != "lava" && diamondSpawnFailed && item.tag != "bouncyLava")
         {
-            if(UnityEngine.Random.value > 0.8)
+            if(UnityEngine.Random.value < 0.2)
             {
-                if(UnityEngine.Random.value < 0.3)
-                {
-                    GameObject life = Resources.Load<GameObject>("heartPickup");
-                    life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
-                    life.transform.parent = item.transform;
-                }
-                else if(!player.GetComponent<PlayerController>().invincible && UnityEngine.Random.value < 0.5)
+                GameObject life = Resources.Load<GameObject>("heartPickup");
+                life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
+                life.transform.parent = item.transform;
+            }
+            else
+            {
+                if(UnityEngine.Random.value < 0.4 && !player.GetComponent<PlayerController>().invincible)
                 {
                     GameObject life = Resources.Load<GameObject>("powerUp");
                     life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
                     life.transform.parent = item.transform;
                 }
-                else if(!player.GetComponent<PlayerController>().weighted)
+                else if(!player.GetComponent<PlayerController>().weighted && UnityEngine.Random.value > 0.8)
                 {
                     GameObject weight = Resources.Load<GameObject>("weight");
                     weight = Instantiate(weight, new Vector2(item.transform.position.x, item.transform.position.y + 0.66f), Quaternion.identity);
-                    weight.transform.parent = item.transform;
+                    weight.transform.parent = item.transform;                        
                 }
             }
         }
