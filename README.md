@@ -12,5 +12,7 @@
  The coin with a red and black "S" on it will make you a super player, while the timer last you will move faster, jump higher, and be invincible.
  The weight item will slow you down while the timer is active.
  The bouncy guys with spikes will hurt you, so will the lava, and the falling "lava rocks."
+Itch.io build link: https://i-shields.itch.io/world-runner
+GitHub link: https://github.com/I-shields/World-runner
 
 
