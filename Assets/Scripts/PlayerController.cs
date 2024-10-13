@@ -45,8 +45,13 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI highscoreSplash;
     public bool invincible = false;
     public TextMeshProUGUI powerupText;
+    public Image powerupImage;
+    public TextMeshProUGUI weightText;
+    public Image weightImage;
+    private float weightTimer = 0;
     public GameObject activeJetpack;
     public GameObject inactiveJetpack;
+    public bool weighted = false;
     void Start()
     {
         //initial setup
@@ -88,7 +93,7 @@ public class PlayerController : MonoBehaviour
         //handle invincible logic
         if(invincible)
         {
-            powerupText.text = "Super charge: " + Mathf.RoundToInt(((startTime + 18) - timer));
+            powerupText.text = Mathf.RoundToInt(((startTime + 18) - timer)).ToString();
         }
         if(invincible && (startTime + 18) <= timer)
         {
@@ -96,6 +101,19 @@ public class PlayerController : MonoBehaviour
             jumpForce /= 1.5f;
             moveSpeed /= 1.5f;
             powerupText.enabled = false;
+            powerupImage.enabled = false;
+        }
+
+        if(weighted)
+        {
+            weightText.text = Mathf.RoundToInt(((weightTimer + 10) - timer)).ToString();
+        }
+        if(weighted && (weightTimer + 10) <= timer)
+        {
+            weighted = false;
+            moveSpeed /= 0.7f;
+            weightText.enabled = false;
+            weightImage.enabled = false;
         }
 
     }
@@ -188,6 +206,11 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(other.gameObject);
             powerUpInit();
+        }
+        if(other.gameObject.tag == "weight" && !invincible)
+        {
+            Destroy(other.gameObject);
+            addWeight();
         }
 
     }
@@ -300,10 +323,23 @@ public class PlayerController : MonoBehaviour
         startTime = timer;
         if(!invincible)
         {
+            powerupImage.enabled = true;
             powerupText.enabled = true;
             invincible = true;
             jumpForce *= 1.5f;
             moveSpeed *= 1.5f;
+        }
+    }
+
+    private void addWeight()
+    {
+        weightTimer = timer;
+        if(!weighted)
+        {
+            weightImage.enabled = true;
+            weightText.enabled = true;
+            moveSpeed *= 0.7f;
+            weighted = true;
         }
     }
 

@@ -61,7 +61,7 @@ public class ObjectPool : MonoBehaviour
         {
             Destroy(item.GetComponent<BoxCollider2D>());
         }
-        if(item.tag == "diamond")
+        if(item.tag == "diamond" || item.tag == "weight")
         {
             Destroy(item);
         }

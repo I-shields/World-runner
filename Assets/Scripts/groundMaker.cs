@@ -265,11 +265,17 @@ public class groundMaker : MonoBehaviour
                     life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
                     life.transform.parent = item.transform;
                 }
-                else if(!player.GetComponent<PlayerController>().invincible)
+                else if(!player.GetComponent<PlayerController>().invincible && UnityEngine.Random.value < 0.5)
                 {
                     GameObject life = Resources.Load<GameObject>("powerUp");
                     life = Instantiate(life, new Vector2(item.transform.position.x, item.transform.position.y + 1.5f), Quaternion.identity);
                     life.transform.parent = item.transform;
+                }
+                else if(!player.GetComponent<PlayerController>().weighted)
+                {
+                    GameObject weight = Resources.Load<GameObject>("weight");
+                    weight = Instantiate(weight, new Vector2(item.transform.position.x, item.transform.position.y + 0.66f), Quaternion.identity);
+                    weight.transform.parent = item.transform;
                 }
             }
         }

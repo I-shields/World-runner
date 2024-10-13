@@ -13,6 +13,7 @@ TagManager:
   - life
   - bouncyLava
   - PowerUp
+  - weight
   layers:
   - Default
   - TransparentFX

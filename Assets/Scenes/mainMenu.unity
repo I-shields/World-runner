@@ -869,7 +869,11 @@ MonoBehaviour:
 
 
     small puddle splash sound effect by Garuda1982 -- https://freesound.org/s/540886/
-    -- License: Attribution 4.0'
+    -- License: Attribution 4.0
+
+
+    Typewriter Inked Font -- Creativetacos -- www.fontspace.com
+    -- Freeware, Non-Commercial'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -896,7 +900,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22.15
+  m_fontSize: 20.05
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
