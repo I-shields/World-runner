@@ -50,7 +50,7 @@ public class mainMenu : MonoBehaviour
         this.GetComponent<Canvas>().enabled = false;
         highScoreCanvas.enabled = true;
         List<int> highScores = getHighScores();
-        if(highScores.Count > 0)
+        if(highScores[0] != 0)
         {
             for(int i = 0; i < highScores.Count; i++)
             {

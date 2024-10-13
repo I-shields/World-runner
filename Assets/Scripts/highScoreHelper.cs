@@ -11,27 +11,14 @@ using System.IO;
 
 public class highScoreHelper
 {
-
-    private static string path = Application.dataPath + "/Resources/Highscores.txt";
     private List<int> scores = new List<int>();
 
     //get high scores and save them to a list
     private void readData()
     {
-        if(File.Exists(path))
+        for (int i = 0; i < 5; i++)
         {
-            using(StreamReader reader = new StreamReader(path))
-            {
-                string line;
-                while((line = reader.ReadLine()) != null)
-                {
-                    scores.Add(int.Parse(line.Trim()));
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("File not found");
+            scores.Add(PlayerPrefs.GetInt(i.ToString(), 0));
         }
     }
 
@@ -49,14 +36,11 @@ public class highScoreHelper
         readData();
         scores.Add(score);
         scores.Sort((a, b) => b.CompareTo(a));
-        using (StreamWriter writer = new StreamWriter(path, false))
+        int i = 0;
+        while(i < 5 && i < scores.Count)
         {
-            int i = 0;
-            while(i < scores.Count && i < 5)
-            {
-                writer.WriteLine(scores[i]);
-                i++;
-            }
+            PlayerPrefs.SetInt(i.ToString(), scores[i]);
+            i++;
         }
     }
 }

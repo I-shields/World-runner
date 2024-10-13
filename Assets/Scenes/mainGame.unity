@@ -766,8 +766,8 @@ Canvas:
   m_GameObject: {fileID: 322713070}
   m_Enabled: 0
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1719766394}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -778,7 +778,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 6
   m_TargetDisplay: 0
 --- !u!224 &322713074
 RectTransform:
@@ -1790,8 +1790,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1307761149}
     - target: {fileID: 4375510915854843757, guid: 522e9871738407745b4dd4bf403a5a38, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1719766394}
+    - target: {fileID: 4375510915854843757, guid: 522e9871738407745b4dd4bf403a5a38, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4375510915854843757, guid: 522e9871738407745b4dd4bf403a5a38, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4375510915854843757, guid: 522e9871738407745b4dd4bf403a5a38, type: 3}
+      propertyPath: m_SortingOrder
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4586138569339524674, guid: 522e9871738407745b4dd4bf403a5a38, type: 3}
       propertyPath: m_Name
@@ -4453,8 +4465,8 @@ Canvas:
   m_GameObject: {fileID: 1676724353}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1719766394}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -4465,7 +4477,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 6
   m_TargetDisplay: 0
 --- !u!224 &1676724357
 RectTransform:
